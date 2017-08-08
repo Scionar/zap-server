@@ -1,4 +1,8 @@
+require('dotenv').config()
+
 const express = require('express');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
 const pug = require('pug');
 const db = require('./db');
 
@@ -6,9 +10,17 @@ const app = express();
 
 app.set('view engine', 'pug')
 app.use('/static', express.static('static'))
+app.use(session({
+  store: new RedisStore({
+    client: db.get(),
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.get('/', (req, res) => {
-  res.render('hand');
+  res.render('game');
 });
 
 db.connect((err) => {
