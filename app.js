@@ -1,5 +1,6 @@
 const express = require('express');
 const pug = require('pug');
+const db = require('./db');
 
 const app = express();
 
@@ -10,6 +11,14 @@ app.get('/', (req, res) => {
   res.render('hand');
 });
 
-app.listen(3000, () => {
-  console.log('Zap client listening on port :3000.');
+db.connect((err) => {
+  if (err) {
+    console.error('Unable to connect to database.');
+    process.exit(1);
+  } else {
+    console.log('Database connection established.');
+    app.listen(3001, () => {
+      console.log('Zap-server listening on port :3001.');
+    });
+  }
 });
