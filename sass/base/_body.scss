@@ -1,0 +1,7 @@
+body {
+  background-color: $color__bahama-blue;
+  color: map-get($font_default, color);
+  font-family: monospace;
+  margin: 0;
+  text-shadow: 0 0 4px $color__black;
+}

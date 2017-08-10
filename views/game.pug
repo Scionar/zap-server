@@ -4,10 +4,26 @@ html(lang="en")
     title="Zap Server"
     link(rel="stylesheet" type="text/css" href="/static/css/main.css")
   body
-    div.screen#join-screen
-      h1 Join.
-    div.screen#game-screen
-      h1 Game.
+    if game_on
+      div.screen#game-screen
+    else
+      div.screen.screen_hidden#game-screen
+      
+        
+        
+    if game_on
+      div.screen.screen_hidden.join-screen#join-screen
+    else
+      div.screen.join-screen#join-screen
+      
+        div.screen__container
+          h1 Zap.
+          p "Here's gamers already in the game. Join into game by pressing button."
+          div.player-list
+            div.player-list__cell
+            div.player-list__cell
+            div.player-list__cell
+          button.button#join-button Join
     
     
   

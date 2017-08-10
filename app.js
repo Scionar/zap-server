@@ -20,7 +20,13 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-  res.render('game');
+  if (!req.session.role) {
+    req.session.role = 'watch';
+  }
+  res.render('game', {
+    role: req.session.role,
+    game_on: false
+  });
 });
 
 db.connect((err) => {

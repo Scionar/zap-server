@@ -1,0 +1,13 @@
+h1 {
+  color: map-get($font_h1, color);
+  font-family: map-get($font_h1, family);
+  font-size: map-get($font_h1, size);
+  line-height: map-get($font_h1, line-height);
+}
+
+h2 {
+  color: map-get($font_h2, color);
+  font-family: map-get($font_h2, family);
+  font-size: map-get($font_h2, size);
+  line-height: map-get($font_h2, line-height);
+}

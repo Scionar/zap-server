@@ -1,7 +1,3 @@
-body {
-  background-color: $color__bahama-blue;
-  color: $color__white;
-  font-family: monospace;
-  margin: 0;
-  text-shadow: 0 0 4px $color__black;
-}
+@import "html";
+@import "body";
+@import "paragraphs";

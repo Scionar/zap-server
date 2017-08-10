@@ -1,0 +1,16 @@
+.player-list {
+  border: 1px solid $color__black;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.player-list__cell {
+  background-color: $color__blumine;
+  border-top: 1px solid $color__oxford_blue;
+  height: 3rem;
+
+  &:first-of-type {
+    border: 0;
+  }
+}
