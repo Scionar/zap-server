@@ -3,6 +3,7 @@ h1 {
   font-family: map-get($font_h1, family);
   font-size: map-get($font_h1, size);
   line-height: map-get($font_h1, line-height);
+  margin: 0;
 }
 
 h2 {
@@ -10,4 +11,5 @@ h2 {
   font-family: map-get($font_h2, family);
   font-size: map-get($font_h2, size);
   line-height: map-get($font_h2, line-height);
+  margin: 0;
 }

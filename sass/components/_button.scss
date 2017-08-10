@@ -5,6 +5,8 @@
   box-shadow: 0 0 10px $color__black;
   color: $color__white;
   font-size: map-get($font_default, size);
+  font-weight: bold;
   margin: 1rem 0 0;
+  text-transform: uppercase;
   padding: 0.5rem 1.25rem;
 }

@@ -1,0 +1,32 @@
+.modal {
+  background-color: $color__bahama-blue;
+  border-radius: 1rem;
+  box-shadow: 0 0 50px $color__black;
+  padding: 2rem;
+  position: absolute;
+  left: 50%;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal_hidden {
+  display: none;
+}
+
+.modal__text-input {
+  display: block;
+  margin: 1rem 0 0;
+  background-color: $color__white;
+  border-radius: 0.5rem;
+  border: 0;
+  box-shadow: 0 0 10px $color__black;
+  color: $color__black;
+  font-size: map-get($font_default, size);
+  padding: 0.5rem 1.25rem;
+}
+
+.modal__submit {
+  display: block;
+  margin: 1rem auto 0;
+}

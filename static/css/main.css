@@ -12,13 +12,15 @@ h1 {
   color: #FFFFFF;
   font-family: monospace;
   font-size: 6vmin;
-  line-height: 150%; }
+  line-height: 150%;
+  margin: 0; }
 
 h2 {
   color: #FFFFFF;
   font-family: monospace;
   font-size: 4vmin;
-  line-height: 150%; }
+  line-height: 150%;
+  margin: 0; }
 
 .screen {
   display: block;
@@ -57,8 +59,58 @@ h2 {
   box-shadow: 0 0 10px #000000;
   color: #FFFFFF;
   font-size: 2.5vmin;
+  font-weight: bold;
   margin: 1rem 0 0;
+  text-transform: uppercase;
   padding: 0.5rem 1.25rem; }
+
+.modal-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; }
+
+.modal-container_hidden {
+  display: none; }
+
+.modal-container__shadow {
+  background-color: #000000;
+  opacity: 0.8;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; }
+
+.modal {
+  background-color: #006699;
+  border-radius: 1rem;
+  box-shadow: 0 0 50px #000000;
+  padding: 2rem;
+  position: absolute;
+  left: 50%;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+
+.modal_hidden {
+  display: none; }
+
+.modal__text-input {
+  display: block;
+  margin: 1rem 0 0;
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  border: 0;
+  box-shadow: 0 0 10px #000000;
+  color: #000000;
+  font-size: 2.5vmin;
+  padding: 0.5rem 1.25rem; }
+
+.modal__submit {
+  display: block;
+  margin: 1rem auto 0; }
 
 .join-screen {
   text-align: center; }
