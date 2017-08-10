@@ -25,7 +25,8 @@ app.get('/', (req, res) => {
   }
   res.render('game', {
     role: req.session.role,
-    game_on: false
+    game_on: false,
+    players: ['Mark', 'Jessie', '-']
   });
 });
 

@@ -48,7 +48,7 @@ h2 {
 .player-list__cell {
   background-color: #1C526D;
   border-top: 1px solid #30424B;
-  height: 3rem; }
+  padding: 1rem 0; }
   .player-list__cell:first-of-type {
     border: 0; }
 

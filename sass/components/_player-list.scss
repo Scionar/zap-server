@@ -8,7 +8,7 @@
 .player-list__cell {
   background-color: $color__blumine;
   border-top: 1px solid $color__oxford_blue;
-  height: 3rem;
+  padding: 1rem 0;
 
   &:first-of-type {
     border: 0;

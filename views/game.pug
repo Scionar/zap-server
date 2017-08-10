@@ -20,9 +20,8 @@ html(lang="en")
           h1 Zap.
           p "Here's gamers already in the game. Join into game by pressing button."
           div.player-list
-            div.player-list__cell
-            div.player-list__cell
-            div.player-list__cell
+            each val in players
+              div.player-list__cell= val
           button.button#join-button Join
     
     div.modal-container.modal-container_hidden
