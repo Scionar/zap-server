@@ -3,6 +3,7 @@ html(lang="en")
   head
     title="Zap Server"
     link(rel="stylesheet" type="text/css" href="/static/css/main.css")
+    script(src="/static/js/axios.min.js")
   body
     if game_on
       div.screen#game-screen
@@ -19,15 +20,17 @@ html(lang="en")
         div.screen__container
           h1 Zap.
           p Here are gamers already in the game. Join into game by pressing button.
-          div.player-list
+          div.player-list#player-list
             each val in game_players
               div.player-list__cell= val
           button.button#join-button Join
     
-    div.modal-container.modal-container_hidden
+    div#modal-container.modal-container.modal-container_hidden
       div.modal-container__shadow
-      div.modal.modal_hidden
+      div#join-modal.modal.modal_hidden
         h2.modal__title Name?
-        input.modal__text-input(type='text')
-        input.button.modal__submit(type='submit' value="Ok")
-        
+        input#register-name-field.modal__text-input(type="text")
+        input#register-button.button.modal__submit(type="submit" value="Ok")
+          
+  
+    script(src="/static/js/join-modal.js")

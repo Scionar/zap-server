@@ -15,5 +15,5 @@ module.exports.connect = (cb) => {
 }
 
 module.exports.get = () => {
-  return state.pool;
+  return state.client;
 }
