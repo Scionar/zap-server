@@ -1,6 +1,8 @@
 require('dotenv').config()
 
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 const session = require('express-session');
 const bodyParser = require("body-parser");
 const RedisStore = require('connect-redis')(session);
@@ -9,6 +11,8 @@ const db = require('./db');
 const game = require('./models/game');
 
 const app = express();
+const server = http.Server(app);
+const io = socketIO(server);
 
 app.set('view engine', 'pug')
 app.use('/static', express.static('static'))
@@ -30,7 +34,7 @@ app.get('/', (req, res) => {
   res.render('game', {
     role: req.session.role,
     game_on: false,
-    game_players: ['Mark', 'Jessie', '-']
+    game_players: ['-', '-', '-']
   });
 });
 
@@ -48,6 +52,7 @@ app.post('/api/user/register', (req, res) => {
               'name': req.session.name,
               'role': req.session.role
             });
+            io.emit('update playerlist');
           });
         } else {
           res.send({'status': 'error', 'message': 'No more slots for more players.'});
@@ -74,10 +79,27 @@ db.connect((err) => {
     process.exit(1);
   } else {
     console.log('Database connection established.');
-    app.listen(3001, () => {
-      console.log('Zap-server listening on port :3001.');
-      game.setGameStatus(0, () => {});
-      game.deleteAllPlayers(() => {});
+    game.setGameStatus(0, () => console.log('Game status set \'0\'.'));
+    game.deleteAllPlayers(() => console.log('Removed existing players from database.'));
+    server.listen(3001, () => {
+      console.log('App listening on port :3001.');
+
+      io.on('connection', (socket) => {
+        let playerAdded = false; // Todo: Better to be in user session.
+
+        socket.on('add player', (name) => {
+          if (playerAdded) return;
+          playerAdded = true;
+          socket.emit('update playerlist');
+          socket.broadcast.emit('update playerlist');
+        });
+      });
+
+      socket.on('disconnect', function () {
+        // Todo: Remove user.
+        socket.emit('update playerlist');
+        socket.broadcast.emit('update playerlist');
+      });
     });
   }
 });

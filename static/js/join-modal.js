@@ -2,6 +2,8 @@
 
 (function () {
 
+  var socket = io();
+
   var joinButton = document.getElementById('join-button');
   var modalContainer = document.getElementById('modal-container');
   var joinModal = document.getElementById('join-modal');
@@ -46,6 +48,10 @@
         console.log(error);
       });
     }
+  });
+
+  socket.on('update playerlist', function (data) {
+    updatePlayers();
   });
 
   updatePlayers();
