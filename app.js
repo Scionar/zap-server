@@ -77,6 +77,7 @@ db.connect((err) => {
     app.listen(3001, () => {
       console.log('Zap-server listening on port :3001.');
       game.setGameStatus(0, () => {});
+      game.deleteAllPlayers(() => {});
     });
   }
 });

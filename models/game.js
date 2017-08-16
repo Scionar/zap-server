@@ -27,3 +27,10 @@ module.exports.getAllPlayers = (cb) => {
     cb(items);
   });
 }
+
+module.exports.deleteAllPlayers = (cb) => {
+  db.get().del('game:players', (error) => {
+    if (error) throw error;
+    cb();
+  });
+}
