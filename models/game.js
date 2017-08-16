@@ -1,5 +1,8 @@
 const db = require('../db');
 
+module.exports.GAME_STATUS_ON = '1';
+module.exports.GAME_STATUS_OFF = '0';
+
 module.exports.setGameStatus = (value, cb) => {
   db.get().set('game:status', value, (error) => {
     if (error) throw error;

@@ -10,9 +10,11 @@
   var registerNameField = document.getElementById('register-name-field');
   var registerButton = document.getElementById('register-button');
   var playerList = document.getElementById('player-list');
+  var joinScreen = document.getElementById('join-screen');
+  var gameScreen = document.getElementById('game-screen');
 
   function updatePlayers() {
-    axios.post('/api/user/getall').then(function (response) {
+    axios.post('/api/player/getall').then(function (response) {
       var users = response.data.players;
       playerList.childNodes.forEach(function (current, index, array) {
         current.innerHTML = users[index] !== undefined ? users[index] : '-';
@@ -21,6 +23,22 @@
       console.log(error);
     });
   };
+
+  function showJoinScreen(toggle) {
+    if (toggle) {
+      joinScreen.classList.remove('screen_hidden');
+    } else {
+      joinScreen.classList.add('screen_hidden');
+    }
+  }
+
+  function showGameScreen(toggle) {
+    if (toggle) {
+      gameScreen.classList.remove('screen_hidden');
+    } else {
+      gameScreen.classList.add('screen_hidden');
+    }
+  }
 
   /**
    * Open joining modal.
@@ -39,7 +57,7 @@
     if (name.length >= 2 && name.length <= 10) {
       registerNameField.value = '';
 
-      axios.post('/api/user/register', {
+      axios.post('/api/player/add', {
         name: name
       }).then(function (response) {
         joinModal.classList.add('modal_hidden');
@@ -52,6 +70,11 @@
 
   socket.on('update playerlist', function (data) {
     updatePlayers();
+  });
+
+  socket.on('start game', function () {
+    showJoinScreen(false);
+    showGameScreen(true);
   });
 
   updatePlayers();

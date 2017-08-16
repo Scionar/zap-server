@@ -9,6 +9,7 @@ const RedisStore = require('connect-redis')(session);
 const pug = require('pug');
 const db = require('./db');
 const game = require('./models/game');
+const addPlayer = require('./middleware/add-player');
 
 const app = express();
 const server = http.Server(app);
@@ -38,33 +39,22 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/api/user/register', (req, res) => {
+app.post('/api/player/add', (req, res) => {
   const name = req.body.name ? req.body.name : null;
-  game.getGameStatus((status) => {
-    if (status === '0') {
-      game.getAllPlayers((players) => {
-        if (players.length < 3) {
-          game.addPlayer(name, () => {
-            req.session.role = 'player';
-            req.session.name = name;
-            res.send({
-              'status': 'ok',
-              'name': req.session.name,
-              'role': req.session.role
-            });
-            io.emit('update playerlist');
-          });
-        } else {
-          res.send({'status': 'error', 'message': 'No more slots for more players.'});
-        }
+  addPlayer(name, io, (status, msg) => {
+    if (status === 'ok') {
+      req.session.role = 'player';
+      req.session.name = name;
+      res.send({
+        'status': 'ok'
       });
     } else {
-      res.send({'status': 'error', 'message': 'No more slots for more players.'});
+      console.log(msg);
     }
   });
 });
 
-app.post('/api/user/getall', (req, res) => {
+app.post('/api/player/getall', (req, res) => {
   game.getAllPlayers((players) => {
     res.send({
       'status': 'ok',
@@ -100,7 +90,7 @@ db.connect((err) => {
           socket.broadcast.emit('update playerlist');
         });
       });
-      
+
     });
   }
 });
