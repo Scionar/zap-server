@@ -93,13 +93,14 @@ db.connect((err) => {
           socket.emit('update playerlist');
           socket.broadcast.emit('update playerlist');
         });
-      });
 
-      socket.on('disconnect', function () {
-        // Todo: Remove user.
-        socket.emit('update playerlist');
-        socket.broadcast.emit('update playerlist');
+        socket.on('disconnect', function () {
+          // Todo: Remove user.
+          socket.emit('update playerlist');
+          socket.broadcast.emit('update playerlist');
+        });
       });
+      
     });
   }
 });
