@@ -1,7 +1,7 @@
-const game = require('../models/game');
+const Game = require('../models/game');
 
 module.exports = function (socket) {
-  game.setGameStatus(game.GAME_STATUS_ON, () => {
+  Game.setStatus(Game.GAME_STATUS_ON, () => {
     console.log('Game started!');
     socket.emit('start game');
   });

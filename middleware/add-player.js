@@ -1,14 +1,15 @@
-const game = require('../models/game');
+const Game = require('../models/game');
+const Player = require('../models/player');
 const startGame = require('./start-game');
 
 module.exports = function (name, socket, cb) {
   // Check if game has not started yet.
-  game.getGameStatus((status) => {
-    if (status === game.GAME_STATUS_OFF) {
+  Game.setStatus((status) => {
+    if (status === Game.GAME_STATUS_OFF) {
       // Check that there is still space for new player.
-      game.getAllPlayers((players) => {
+      Player.getAll((players) => {
         if (players.length < 3) {
-          game.addPlayer(name, () => {
+          Player.add(name, () => {
             socket.emit('update playerlist');
             if (players.length === 2) startGame(socket);
             cb('ok', '');
