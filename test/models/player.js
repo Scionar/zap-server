@@ -4,26 +4,29 @@ const Player = require('../../models/Player');
 const data = require('../data/player');
 
 describe('Player model', () => {
-  before((done) => {
+  before(function (done) {
     db.connect((err) => {
       if (err) return done(err);
+      done();
+    });
+  });
+
+  beforeEach(function (done) {
+    db.flush(() => {
       db.input(data.collections, () => {
         done();
       });
     });
   });
 
-  beforeEach((done) => {
-    db.flush(() => done());
-  });
-
-  describe('#getAll()', () => {
-    it('should return one user', () => {
-      Player.getAll(() => {
-        values.should.be.a('array');
-        values.should.have.lengthOf(1);
-        values[0].should.be.a('string');
-        values[0].should.equal('test1');
+  describe('#getAll()', function () {
+    it('should return one user', function (done) {
+      Player.getAll((value) => {
+        value.should.be.a('array');
+        value.should.have.lengthOf(1);
+        value[0].should.be.a('string');
+        value[0].should.equal('test1');
+        done();
       });
     });
   });
