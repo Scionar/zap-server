@@ -24,16 +24,21 @@ module.exports.flush = (cb) => {
     state.client.flushdb((error) => {
       if (error) throw error;
       cb();
-    }
+    });
   } else {
     cb();
   }
 }
 
+/**
+ * Takes data to input and callback.
+ * @arg {array} data Two dimensional array of Redis commands.
+ * @arg {requestCallback} cb The callback to be called after running all commands.
+ */
 module.exports.input = (data, cb) => {
-  if (!state.client) return cb(new Error('No database connection.'));
-  async.each(data.collections, (value) => {
-    if (error) throw error;
-    state.client[value[0]](...data.slice(1));
+  if (!state.client) throw new Error('No database connection.');
+  async.each(data, (value, callback) => {
+    state.client[value[0]](...value.slice(1));
+    callback();
   }, cb);
 }

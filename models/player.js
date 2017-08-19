@@ -1,7 +1,7 @@
 const db = require('../db');
 
 module.exports.add = (name, cb) => {
-  db.get().lpush('game:players', name, (error) => {
+  db.get().lpush('player:all', name, (error) => {
     if (error) throw error;
     cb();
   });
