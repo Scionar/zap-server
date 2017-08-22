@@ -1,5 +1,6 @@
 {
   "collections": [
-    ["lpush", "player:all", "test1"]
+    ["hset", "player:profile:test1", "name", "test1"],
+    ["hset", "player:profile:test2", "name", "test2"]
   ]
 }

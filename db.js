@@ -1,5 +1,8 @@
 const async = require('async');
+const bluebird = require('bluebird');
 const redis = require('redis');
+
+bluebird.promisifyAll(redis.RedisClient.prototype);
 
 const state = {
   client: null,
@@ -7,6 +10,7 @@ const state = {
 
 module.exports.connect = (cb) => {
   state.client = redis.createClient();
+  bluebird.promisifyAll(redis.RedisClient.prototype);
 
   state.client.on("error", function (err) {
     console.log(err);

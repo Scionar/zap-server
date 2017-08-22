@@ -1,22 +1,31 @@
 const db = require('../db');
 
 module.exports.add = (name, cb) => {
-  db.get().lpush('player:all', name, (error) => {
-    if (error) throw error;
-    cb();
-  });
+  Promise.all([
+    db.get().hmsetAsync(`player:profile:${name}`, 'name', name),
+  ]).then(cb());
 }
 
 module.exports.getAll = (cb) => {
-  db.get().lrange('player:all', 0, -1, (error, items) => {
+  db.get().scan(0, 'match', 'player:profile:*', (error, value) => {
     if (error) throw error;
-    cb(items);
+    const keys = value[1];
+    Promise.all(
+      keys.map((key, index, array) => {return db.get().hgetallAsync(key)})
+    ).then((response) => {
+      cb(response);
+    });
   });
 }
 
 module.exports.deleteAll = (cb) => {
-  db.get().del('player:all', (error) => {
+  db.get().scan(0, 'match', 'player:profile:*', (error, value) => {
     if (error) throw error;
-    cb();
+    const keys = value[1];
+    Promise.all(
+      keys.map((key, index, array) => {return db.get().delAsync(key)})
+    ).then((response) => {
+      cb(response);
+    });
   });
 }
