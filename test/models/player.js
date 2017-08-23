@@ -21,7 +21,8 @@ describe('Player model', () => {
 
   describe('#getAll()', function () {
     it('should return array with two users objects', function (done) {
-      Player.getAll((value) => {
+      Player.getAll()
+      .then((value) => {
         value.should.be.a('array');
         value.should.have.lengthOf(2);
         value[0].should.be.a('object');
@@ -33,41 +34,56 @@ describe('Player model', () => {
 
   describe('#deleteAll', function () {
     it('remove all users', function (done) {
-      Player.deleteAll(() => {
-        Player.getAll((value) => {
-          value.should.have.lengthOf(0);
-          done();
-        });
+      Player.deleteAll()
+      .then(() => {
+        return Player.getAll()
+      })
+      .then((value) => {
+        value.should.have.lengthOf(0);
+        done();
       });
     });
   });
 
-  // describe('#add()', function () {
-  //   it('should add one new user to end of list', function (done) {
-  //     Player.add('Test', () => {
-  //       Player.getAll((value) => {
-  //         value.should.be.a('array');
-  //         value.should.have.lengthOf(2);
-  //         value[1].should.be.a('string');
-  //         value[1].should.equal('Test');
-  //         done();
-  //       });
-  //     });
-  //   });
-  //
-  //   it('should add one new user to empty list', function (done) {
-  //     Player.deleteAll(() => {
-  //       Player.add('Test', () => {
-  //         Player.getAll((value) => {
-  //           value.should.be.a('array');
-  //           value.should.have.lengthOf(1);
-  //           value[0].should.be.a('string');
-  //           value[0].should.equal('Test');
-  //           done();
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
+  describe('#add()', function () {
+    it('should add one new user to end of list', function (done) {
+      Player.add('Test')
+      .then(() => {
+        return Player.getAll();
+      }).then((value) => {
+        value.should.be.a('array');
+        value.should.have.lengthOf(3);
+        value[2].should.be.a('object');
+        done();
+      });
+    });
+
+    it('should add one new user to empty list', function (done) {
+      Player.deleteAll()
+      .then(() => {
+        return Player.add('Test');
+      })
+      .then(() => {
+        return Player.getAll();
+      })
+      .then((value) => {
+        value.should.be.a('array');
+        value.should.have.lengthOf(1);
+        value[0].should.be.a('object');
+        done();
+      });
+    });
+
+    it('should have right name property', function (done) {
+      Player.add('Test')
+      .then(() => {
+        return Player.getAll();
+      })
+      .then((value) => {
+        value[2].should.deep.equal({name: 'Test'});
+        done();
+      });
+    });
+  });
 
 });
