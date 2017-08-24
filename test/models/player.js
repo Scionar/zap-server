@@ -1,6 +1,6 @@
 const expect = require('chai').should();
 const db = require('../../db');
-const Player = require('../../models/Player');
+const Player = require('../../models/player');
 const data = require('../data/player');
 
 describe('Player model', () => {
