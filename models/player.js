@@ -15,7 +15,7 @@ module.exports.getAll = () => {
 module.exports.deleteAll = (cb) => {
   return db.get().scanAsync(0, 'match', 'player:profile:*').then((scanValue) => {
     return Promise.all(
-      scanValue[1].map((key, index, array) => {return db.get().delAsync(key).then(()=> {}, () => {}).catch((error) => {throw error})})
+      scanValue[1].map((key, index, array) => {return db.get().delAsync(key)})
     )
   })
 }

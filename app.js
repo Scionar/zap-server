@@ -34,7 +34,8 @@ app.get('/', (req, res) => {
   if (!req.session.role) {
     req.session.role = 'watch';
   }
-  Game.getStatus((status) => {
+  Game.getStatus()
+  .then((status) => {
     res.render('game', {
       role: req.session.role,
       game_on: (status === Game.GAME_STATUS_ON) ? true : false,
@@ -59,7 +60,8 @@ app.post('/api/player/add', (req, res) => {
 });
 
 app.post('/api/player/getall', (req, res) => {
-  Player.getAll((players) => {
+  Player.getAll()
+  .then((players) => {
     res.send({
       'status': 'ok',
       'players': players

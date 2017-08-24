@@ -4,12 +4,15 @@ const startGame = require('./start-game');
 
 module.exports = function (name, socket, cb) {
   // Check if game has not started yet.
-  Game.setStatus((status) => {
+  Game.getStatus()
+  .then((status) => {
     if (status === Game.GAME_STATUS_OFF) {
       // Check that there is still space for new player.
-      Player.getAll((players) => {
+      Player.getAll()
+      .then((players) => {
         if (players.length < 3) {
-          Player.add(name, () => {
+          Player.add(name)
+          .then(() => {
             socket.emit('update playerlist');
             if (players.length === 2) startGame(socket);
             cb('ok', '');

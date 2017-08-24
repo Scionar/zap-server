@@ -16,7 +16,7 @@
     .then((response) => {
       const users = response.data.players;
       playerList.childNodes.forEach((current, index, array) => {
-        current.innerHTML = users[index] !== undefined ? users[index] : '-';
+        current.innerHTML = users[index] !== undefined ? users[index].name : '-';
       });
     })
     .catch((error) => {

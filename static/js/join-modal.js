@@ -17,7 +17,7 @@
     axios.post('/api/player/getall').then(function (response) {
       var users = response.data.players;
       playerList.childNodes.forEach(function (current, index, array) {
-        current.innerHTML = users[index] !== undefined ? users[index] : '-';
+        current.innerHTML = users[index] !== undefined ? users[index].name : '-';
       });
     }).catch(function (error) {
       console.log(error);
