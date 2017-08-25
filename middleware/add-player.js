@@ -1,8 +1,9 @@
 const Game = require('../models/game');
 const Player = require('../models/player');
 const startGame = require('./start-game');
+const webSocket = require('../websocket');
 
-module.exports = function (name, socket, cb) {
+module.exports = function (name, cb) {
   // Check if game has not started yet.
   Game.getStatus()
   .then((status) => {
@@ -13,8 +14,8 @@ module.exports = function (name, socket, cb) {
         if (players.length < 3) {
           Player.add(name)
           .then(() => {
-            socket.emit('update playerlist');
-            if (players.length === 2) startGame(socket);
+            webSocket.get().emit('update playerlist');
+            if (players.length === 2) startGame();
             cb('ok', '');
           });
         } else {

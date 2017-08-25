@@ -1,9 +1,10 @@
 const Game = require('../models/game');
+const webSocket = require('../websocket');
 
-module.exports = function (socket) {
+module.exports = function () {
   Game.setStatus(Game.GAME_STATUS_ON)
   .then(() => {
     console.log('Game started!');
-    socket.emit('start game');
+    webSocket.get().emit('start game');
   });
 }

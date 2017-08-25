@@ -2,23 +2,24 @@ require('dotenv').config()
 
 const express = require('express');
 const http = require('http');
-const socketIO = require('socket.io');
 const session = require('express-session');
 const bodyParser = require("body-parser");
 const RedisStore = require('connect-redis')(session);
 const pug = require('pug');
 const db = require('./db');
+const webSocket = require('./websocket');
+const apiController = require('./controllers/api');
 const Game = require('./models/game');
 const Player = require('./models/player');
-const addPlayer = require('./middleware/add-player');
 const resetGame = require('./middleware/reset-game');
 
 const app = express();
 const server = http.Server(app);
-const io = socketIO(server);
+webSocket.create(server);
 
 app.set('view engine', 'pug')
-app.use('/static', express.static('static'))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(session({
   store: new RedisStore({
     client: db.get(),
@@ -27,8 +28,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use('/api', apiController);
+app.use('/static', express.static('static'))
 
 app.get('/', (req, res) => {
   if (!req.session.role) {
@@ -44,31 +45,6 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/api/player/add', (req, res) => {
-  const name = req.body.name ? req.body.name : null;
-  addPlayer(name, io, (status, msg) => {
-    if (status === 'ok') {
-      req.session.role = 'player';
-      req.session.name = name;
-      res.send({
-        'status': 'ok'
-      });
-    } else {
-      console.log(msg);
-    }
-  });
-});
-
-app.post('/api/player/getall', (req, res) => {
-  Player.getAll()
-  .then((players) => {
-    res.send({
-      'status': 'ok',
-      'players': players
-    });
-  });
-});
-
 db.connect((err) => {
   if (err) {
     console.error('Unable to connect to database.');
@@ -79,7 +55,7 @@ db.connect((err) => {
       server.listen(3001, () => {
         console.log('App listening on port :3001.');
 
-        io.on('connection', (socket) => {
+        webSocket.get().on('connection', (socket) => {
           let playerAdded = false; // Todo: Better to be in user session.
 
           socket.on('add player', (name) => {
