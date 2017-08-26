@@ -14,7 +14,7 @@
   var gameScreen = document.getElementById('game-screen');
 
   function updatePlayers() {
-    axios.post('/api/player/getall').then(function (response) {
+    axios.get('/api/player/getall').then(function (response) {
       var users = response.data.players;
       playerList.childNodes.forEach(function (current, index, array) {
         current.innerHTML = users[index] !== undefined ? users[index].name : '-';

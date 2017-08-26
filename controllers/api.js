@@ -19,10 +19,10 @@ router.post('/player/add', (req, res) => {
   });
 });
 
-router.post('/player/getall', (req, res) => {
+router.get('/player/getall', (req, res) => {
   Player.getAll()
   .then((players) => {
-    res.send({
+    res.json({
       'status': 'ok',
       'players': players
     });

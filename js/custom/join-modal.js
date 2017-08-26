@@ -12,7 +12,7 @@
   const gameScreen = document.getElementById('game-screen');
 
   function updatePlayers() {
-    axios.post('/api/player/getall')
+    axios.get('/api/player/getall')
     .then((response) => {
       const users = response.data.players;
       playerList.childNodes.forEach((current, index, array) => {
