@@ -6,25 +6,16 @@ html(lang="en")
     script(src="/static/js/axios.min.js")
     script(src="/static/js/socket.io.js")
   body
-    if game_on
-      div.screen#game-screen
-    else
-      div.screen.screen_hidden#game-screen
-      
-        
-        
-    if game_on
-      div.screen.screen_hidden.join-screen#join-screen
-    else
-      div.screen.join-screen#join-screen
-      
-        div.screen__container
-          h1 Zap.
-          p Here are gamers already in the game. Join into game by pressing button.
-          div.player-list#player-list
-            each val in game_players
-              div.player-list__cell= val
-          button.button#join-button Join
+    div.screen#game-screen(class=!game_on && 'screen_hidden')
+          
+    div.screen.join-screen#join-screen(class=game_on && 'screen_hidden')
+      div.screen__container
+        h1 Zap.
+        p Here are gamers already in the game. Join into game by pressing button.
+        div.player-list#player-list
+          each val in game_players
+            div.player-list__cell= val
+        button.button#join-button Join
     
     div#modal-container.modal-container.modal-container_hidden
       div.modal-container__shadow
