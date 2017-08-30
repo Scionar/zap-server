@@ -46,19 +46,21 @@ describe('Player model', () => {
   });
 
   describe('#add()', function () {
-    it('should add one new user to end of list', function (done) {
+    it('should add one new user', function (done) {
       Player.add('Test')
       .then(() => {
         return Player.getAll();
       }).then((value) => {
         value.should.be.a('array');
         value.should.have.lengthOf(3);
-        value[2].should.be.a('object');
+        value.should.deep.include({name: 'test1'});
+        value.should.deep.include({name: 'test2'});
+        value.should.deep.include({name: 'Test'});
         done();
       });
     });
 
-    it('should add one new user to empty list', function (done) {
+    it('should add one new user as a first', function (done) {
       Player.deleteAll()
       .then(() => {
         return Player.add('Test');
@@ -69,21 +71,9 @@ describe('Player model', () => {
       .then((value) => {
         value.should.be.a('array');
         value.should.have.lengthOf(1);
-        value[0].should.be.a('object');
-        done();
-      });
-    });
-
-    it('should have right name property', function (done) {
-      Player.add('Test')
-      .then(() => {
-        return Player.getAll();
-      })
-      .then((value) => {
-        value[2].should.deep.equal({name: 'Test'});
+        value.should.deep.include({name: 'Test'});
         done();
       });
     });
   });
-
 });

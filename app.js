@@ -12,6 +12,7 @@ const apiController = require('./controllers/api');
 const Game = require('./models/game');
 const Player = require('./models/player');
 const resetGame = require('./middleware/reset-game');
+const addPlayer = require('./middleware/add-player');
 
 const app = express();
 const server = http.Server(app);
@@ -58,11 +59,17 @@ db.connect((err) => {
         webSocket.get().on('connection', (socket) => {
           let playerAdded = false; // Todo: Better to be in user session.
 
-          socket.on('add player', (name) => {
-            if (playerAdded) return;
-            playerAdded = true;
-            socket.emit('update playerlist');
-            socket.broadcast.emit('update playerlist');
+          socket.on('add player', (data, cb) => {
+            const name = data.name;
+            addPlayer(name, (status, msg) => {
+              if (status === 'ok') {
+                socket.emit('update playerlist');
+                socket.broadcast.emit('update playerlist');
+                cb();
+              } else {
+                console.log(msg);
+              }
+            });
           });
 
           socket.on('disconnect', function () {

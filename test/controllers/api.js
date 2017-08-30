@@ -1,3 +1,4 @@
+const expect = require('chai').should();
 const request = require('supertest');
 const express = require('express');
 const apiController = require('../../controllers/api');
@@ -47,18 +48,17 @@ describe('API controller', () => {
       .get('/api/player/getall')
       .end((err, res) => {
         if (err) return done(err);
-        res.body.should.be.a('object');
-        res.body.should.have.property('players');
-        res.body.players.should.be.a('array');
-        res.body.players.should.have.lengthOf(2);
-        res.body.players[0].should.have.property('name');
-        res.body.players[0].name.should.equal('test2');
-        res.body.players[1].should.have.property('name');
-        res.body.players[1].name.should.equal('test1');
+        const value = res.body;
+        value.should.be.a('object');
+        value.should.have.property('players');
+        value.players.should.be.a('array');
+        value.players.should.have.lengthOf(2);
+        value.players[0].should.have.property('name');
+        value.players[0].name.should.equal('test1');
+        value.players[1].should.have.property('name');
+        value.players[1].name.should.equal('test2');
         done();
       });
     });
   });
-
-
 });

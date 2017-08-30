@@ -56,16 +56,9 @@
 
     if (name.length >= 2 && name.length <= 10) {
       registerNameField.value = '';
-
-      axios.post('/api/player/add', {
-        name
-      })
-      .then((response) => {
+      socket.emit('add player', {name}, () => {
         joinModal.classList.add('modal_hidden');
         modalContainer.classList.add('modal-container_hidden');
-      })
-      .catch((error) => {
-        console.log(error);
       });
     }
   });
