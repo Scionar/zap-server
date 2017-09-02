@@ -67,6 +67,7 @@ db.connect((err) => {
                 socket.broadcast.emit('update playerlist');
                 cb();
               } else {
+                // Todo: Show error message to user.
                 console.log(msg);
               }
             });
