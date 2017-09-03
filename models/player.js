@@ -13,8 +13,7 @@ module.exports.add = (name) => {
     if (!scanValue[1].length) {
       return db.get().hmsetAsync(`player:profile:${name}`, 'name', name);
     }
-    console.log('Username already exists.');
-    return 'EXISTS';
+    return Promise.reject('Username already exists.');
   });
 }
 

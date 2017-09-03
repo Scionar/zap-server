@@ -61,16 +61,8 @@ db.connect((err) => {
 
           socket.on('add player', (data, cb) => {
             const name = data.name;
-            addPlayer(name, (status, msg) => {
-              if (status === 'ok') {
-                socket.emit('update playerlist');
-                socket.broadcast.emit('update playerlist');
-                cb();
-              } else {
-                // Todo: Show error message to user.
-                console.log(msg);
-              }
-            });
+            addPlayer(name)
+            .then(cb());
           });
 
           socket.on('disconnect', function () {

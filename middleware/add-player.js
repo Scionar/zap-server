@@ -4,34 +4,28 @@ const startGame = require('./start-game');
 const webSocket = require('../websocket');
 
 module.exports = function (name, cb) {
-  // Check if game has not started yet.
-  Game.getStatus()
-  .then((status) => {
-    if (status === Game.GAME_STATUS_OFF) {
-      // Get user amount to check if room full.
-      Player.getAll()
-      .then((players) => {
+  let players;
 
-        Player.add(name)
-        .then((value) => {
-          if (value === 'OK') {
-            webSocket.get().emit('update playerlist');
-            if (players.length === 2) startGame();
-            cb('ok', '');
-          }
-          else if (value === 'EXISTS') {
-            cb('error', 'Username already exists.');
-          } else {
-            cb('error', 'Undefined error.');
-          }
-        })
-        .catch(() => {
-          console.log('User was not created.');
-        });
-
-      });
-    } else {
-      cb('error', 'Game has already started.');
-    }
+  return Promise.all([
+    Game.getStatus(),
+    Player.getAll()
+  ])
+  .then((values) => {
+    players = values[1];
+    // Check status.
+    if (values[0] === Game.GAME_STATUS_ON) return Promise.reject('Game on.');
+    return Promise.resolve();
+  })
+  .then(() => {
+    return Player.add(name)
+  }, (reason) => {
+    console.log(reason);
+  })
+  .then(() => {
+    webSocket.get().emit('update playerlist');
+    if (players.length === 2) startGame();
+    return Promise.resolve();
+  }, (reason) => {
+    console.log(reason);
   });
 }
