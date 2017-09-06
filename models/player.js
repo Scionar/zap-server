@@ -1,13 +1,7 @@
 const db = require('../db');
 
 module.exports.add = (name) => {
-  return new Promise((resolve, reject) => {
-    db.get().scanAsync(0, 'match', `player:profile:${name}`)
-    .then(
-      scanValue => resolve(scanValue),
-      scanValue => reject(scanValue)
-    );
-  })
+  return db.get().scanAsync(0, 'match', `player:profile:${name}`)
   .then((scanValue) => {
     // If user does not already exist.
     if (!scanValue[1].length) {
@@ -18,7 +12,8 @@ module.exports.add = (name) => {
 }
 
 module.exports.getAll = () => {
-  return db.get().scanAsync(0, 'match', 'player:profile:*').then((scanValue) => {
+  return db.get().scanAsync(0, 'match', 'player:profile:*')
+  .then((scanValue) => {
     return Promise.all(
       scanValue[1].map((key, index, array) => {return db.get().hgetallAsync(key)})
     )

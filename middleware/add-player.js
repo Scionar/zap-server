@@ -3,17 +3,11 @@ const Player = require('../models/player');
 const startGame = require('./start-game');
 const webSocket = require('../websocket');
 
-module.exports = function (name, cb) {
-  let players;
-
-  return Promise.all([
-    Game.getStatus(),
-    Player.getAll()
-  ])
-  .then((values) => {
-    players = values[1];
+module.exports = function (name) {
+  return Game.getStatus()
+  .then((value) => {
     // Check status.
-    if (values[0] === Game.GAME_STATUS_ON) return Promise.reject('Game on.');
+    if (value === Game.GAME_STATUS_ON) return Promise.reject('Game on.');
     return Promise.resolve();
   })
   .then(() => {
@@ -22,10 +16,16 @@ module.exports = function (name, cb) {
     console.log(reason);
   })
   .then(() => {
-    webSocket.get().emit('update playerlist');
-    if (players.length === 2) startGame();
-    return Promise.resolve();
+    return Player.getAll()
   }, (reason) => {
     console.log(reason);
-  });
+    return Promise.reject();
+  })
+  .then((value) => {
+    webSocket.get().emit('update playerlist');
+    if (value.length === 3) startGame();
+    return Promise.resolve();
+  }, () => {
+
+  })
 }

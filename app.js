@@ -36,8 +36,7 @@ app.get('/', (req, res) => {
   if (!req.session.role) {
     req.session.role = 'watch';
   }
-  Game.getStatus()
-  .then((status) => {
+  Game.getStatus().then((status) => {
     res.render('game', {
       role: req.session.role,
       game_on: (status === Game.GAME_STATUS_ON) ? true : false,
@@ -52,7 +51,7 @@ db.connect((err) => {
     process.exit(1);
   } else {
     console.log('Database connection established.');
-    resetGame(() => {
+    resetGame().then(() => {
       server.listen(3001, () => {
         console.log('App listening on port :3001.');
 
