@@ -64,6 +64,9 @@ h2 {
   text-transform: uppercase;
   padding: 0.5rem 1.25rem; }
 
+.button_hidden {
+  visibility: hidden; }
+
 .modal-container {
   position: absolute;
   left: 0;

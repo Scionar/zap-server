@@ -56,10 +56,22 @@
 
     if (name.length >= 2 && name.length <= 10) {
       registerNameField.value = '';
-      socket.emit('add player', {name}, () => {
-        joinModal.classList.add('modal_hidden');
-        modalContainer.classList.add('modal-container_hidden');
-      });
+      joinModal.classList.add('modal_hidden');
+      modalContainer.classList.add('modal-container_hidden');
+      axios.get('/session/create', {
+        params: {
+          name
+        }
+      })
+      .then((response) => {
+        if (response.data.status === 'ok') return Promise.resolve(response.data.msg);
+        return Promise.reject(response.data.msg);
+      })
+      .then((msg) => {
+        joinButton.classList.add('button_hidden');
+      }, (msg) => {
+        console.log(msg);
+      })
     }
   });
 

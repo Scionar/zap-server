@@ -15,7 +15,7 @@ html(lang="en")
         div.player-list#player-list
           each val in game_players
             div.player-list__cell= val
-        button.button#join-button Join
+        button.button#join-button(class=user_joined && 'button_hidden') Join
     
     div#modal-container.modal-container.modal-container_hidden
       div.modal-container__shadow
