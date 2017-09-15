@@ -1,0 +1,14 @@
+.deck-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    padding-top: 150%;
+  }
+}
