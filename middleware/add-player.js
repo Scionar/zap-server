@@ -3,7 +3,7 @@ const Player = require('../models/player');
 const startGame = require('./start-game');
 const webSocket = require('../websocket');
 
-module.exports = function (name) {
+module.exports = (name) => {
   return Game.getStatus()
   .then((value) => {
     // Check status.

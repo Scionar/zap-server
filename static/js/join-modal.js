@@ -55,20 +55,16 @@
     var name = registerNameField.value;
 
     if (name.length >= 2 && name.length <= 10) {
-      registerNameField.value = '';
-      joinModal.classList.add('modal_hidden');
-      modalContainer.classList.add('modal-container_hidden');
-      axios.get('/session/create', {
-        params: {
-          name: name
+      socket.emit('add player', { name: name }, function (data) {
+        console.log('1111K111TOGOOGO');
+        console.log(data);
+        if (data.status === 'ok') {
+          console.log('KTOGOOGO');
+          console.log(data);
+          joinModal.classList.add('modal_hidden');
+          modalContainer.classList.add('modal-container_hidden');
+          joinButton.classList.add('button_hidden');
         }
-      }).then(function (response) {
-        if (response.data.status === 'ok') return Promise.resolve(response.data.msg);
-        return Promise.reject(response.data.msg);
-      }).then(function (msg) {
-        joinButton.classList.add('button_hidden');
-      }, function (msg) {
-        console.log(msg);
       });
     }
   });

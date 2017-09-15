@@ -11,6 +11,10 @@ module.exports.add = (name) => {
   });
 }
 
+module.exports.delete = (name) => {
+  return db.get().delAsync(`player:profile:${name}`);
+}
+
 module.exports.getAll = () => {
   return db.get().scanAsync(0, 'match', 'player:profile:*')
   .then((scanValue) => {

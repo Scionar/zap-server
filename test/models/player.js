@@ -76,4 +76,19 @@ describe('Player model', () => {
       });
     });
   });
+
+  describe('#delete()', function () {
+    it('should delete test1 and only have test2 user anymore', function (done) {
+      Player.delete('test1')
+      .then(() => {
+        return Player.getAll();
+      })
+      .then((value) => {
+        value.should.have.lengthOf(1);
+        value.should.deep.include({name: 'test2'});
+        value.should.not.deep.include({name: 'test1'});
+        done();
+      });
+    });
+  });
 });
