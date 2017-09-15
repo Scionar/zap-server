@@ -32,7 +32,7 @@ describe('Player model', () => {
     });
   });
 
-  describe('#deleteAll', function () {
+  describe('#deleteAll()', function () {
     it('remove all users', function (done) {
       Player.deleteAll()
       .then(() => {

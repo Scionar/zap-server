@@ -42,7 +42,7 @@ describe('Game model', () => {
     });
   });
 
-  describe('#setStatus', function () {
+  describe('#setStatus()', function () {
     it('should change game status to ON', function (done) {
       Game.setStatus(Game.GAME_STATUS_ON)
       .then(() => {
