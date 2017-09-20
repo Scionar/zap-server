@@ -1,6 +1,3 @@
 {
-  "cards": ["h1", "h2", "h3", "h4"],
-  "collections": [
-    ["set", "game:status", "asd"]
-  ]
+  "cards": ["h1", "h2", "h3", "h4"]
 }

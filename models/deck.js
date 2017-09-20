@@ -6,10 +6,15 @@ const db = require('../db');
  */
 const collectionExists = (name) => {
   return db.get().lrangeAsync('deck:index', 0, -1)
-  .then((list) => {
-    if (value.indexOf(value) !== -1) return Promise.resolve();
-    return Promise.reject();
-  });
+  .then(
+    (list) => {
+      if (list.indexOf(name) !== -1) return Promise.resolve();
+      return Promise.reject("Collection doesn't exists.");
+    },
+    () => {
+      throw new Error('Checking deck:index failed.');
+    }
+  );
 }
 module.exports.collectionExists = collectionExists;
 
@@ -24,7 +29,7 @@ const emptyCollection = (target) => {
       return db.get().delAsync(`deck:collection:${target}`)
     },
     () => {
-      // todo: What here?
+      throw new Error('Collection exist check failed.');
     }
   );
 }
@@ -36,7 +41,7 @@ module.exports.emptyCollection = emptyCollection;
  */
 module.exports.createDeck = (cards) => {
   return Promise.all([
-    db.get().lpushAsync('deck:index', 'default'),
+    createCollection('default'),
     db.get().lpushAsync('deck:collection:default', ...cards)
   ]);
 }
@@ -45,9 +50,10 @@ module.exports.createDeck = (cards) => {
  * Create new collection.
  * @param {string} name Name of the new collection.
  */
-module.exports.createCollection = (name) => {
+const createCollection = (name) => {
   return db.get().lpushAsync('deck:index', name)
 }
+module.exports.createCollection = createCollection;
 
 /**
  * Remove collection. Removes name from index and deletes list of cards.
@@ -79,7 +85,7 @@ module.exports.swapCard = (card, source, destination) => {
       ])
     },
     () => {
-      // todo: What here?
+      throw new Error('Checking source and/or destination collections failed.');
     }
   );
 }
@@ -97,19 +103,19 @@ module.exports.swapCollection = (source, destination) => {
   .then(
     () => db.get().lrangeAsync(`deck:collection:${source}`, 0, -1),
     () => {
-      // todo: What here?
+      throw new Error('Checking source and/or destination collections failed.');
     }
   )
   .then(
     (sourceCollection) => db.get().lpushAsync(`deck:collection:${target}`, ...sourceCollection),
     () => {
-      // todo: What here?
+      throw new Error('Fetching source collection content failed.');
     }
   )
   .then(
     () => emptyCollection(source),
     () => {
-      // todo: What here?
+      throw new Error('Pushing cards to target collection failed.');
     }
   )
 }
