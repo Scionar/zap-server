@@ -107,7 +107,9 @@ module.exports.swapCollection = (source, destination) => {
     }
   )
   .then(
-    (sourceCollection) => db.get().lpushAsync(`deck:collection:${target}`, ...sourceCollection),
+    sourceCollection => {
+      db.get().lpushAsync(`deck:collection:${destination}`, ...sourceCollection)
+    },
     () => {
       throw new Error('Fetching source collection content failed.');
     }
