@@ -2,7 +2,7 @@ const db = require('../db');
 
 /**
  * Check if promise exists in index. Using promise.
- *  @param {string} name One level array of cards in deck.
+ * @param {string} name One level array of cards in deck.
  */
 const collectionExists = (name) => {
   return db.get().lrangeAsync('deck:index', 0, -1)
@@ -121,3 +121,16 @@ module.exports.swapCollection = (source, destination) => {
     }
   )
 }
+
+/**
+ * Get collection content.
+ * @param {string} name Name of the collection.
+ */
+const getCollection = (name) => {
+  return collectionExists(name)
+  .then(
+    () => db.get().lrangeAsync(`deck:collection:${name}`, 0, -1),
+    () => {throw new Error("Collection doesn't exist.")}
+  );
+}
+module.exports.getCollection = getCollection;
