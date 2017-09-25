@@ -1,25 +1,50 @@
 const Player = require('../models/player');
 const Deck = require('../models/deck');
-const pickOneCard = require('./pick-one-card');
 
 /**
  * Deal cards from default collection for existing players.
  * @param {integer} count How many cards to deal for one player.
  */
 module.exports = (count) => {
-  return Player.getAll()
+  return Promise.all([
+    Player.getAll(),
+    Deck.getCollection('default')
+  ])
   .then(
-    players => {
-      // Go trough all all players.
+    values => {
+      const players = values[0];
+      let collection = values[1];
+      const cards = [...Array(count * players.length)].map(() => {
+        const randomIndex = Math.floor(Math.random() * collection.length);
+        const card = collection.splice(randomIndex, 1)[0];
+        return card;
+      });
+
+      return Promise.resolve([
+        players,
+        cards
+      ]);
+    },
+    () => {throw new Error('Getting all data failed!')}
+  )
+  .then(
+    values => {
+      const players = values[0];
+      const cards = values[1];
+
+      const shares = cards.map((card, index) => {
+        return {
+          card,
+          'player': players[Math.floor(index/count)].name
+        }
+      });
+
       return Promise.all(
-        players.map((player) => {
-          // Get one card from default collection X times.
-          return Promise.all(
-            [...Array(count)].map(() => pickOneCard('default', player.name))
-          )
+        shares.map(share => {
+          return Deck.swapCard(share.card, 'default', share.player)
         })
       );
     },
-    () => {throw new Error('Getting all players failed!')}
-  )
+    () => {throw new Error('Forming player and card data failed!')}
+  );
 }
