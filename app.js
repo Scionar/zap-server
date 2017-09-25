@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(session.getSession());
 app.use('/api', apiController);
 app.use('/session', sessionController);
-app.use('/static', express.static('static'))
+app.use('/public', express.static('public'))
 
 app.get('/', (req, res) => {
   if (!req.session.user) {

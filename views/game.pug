@@ -2,9 +2,9 @@ doctype html
 html(lang="en")
   head
     title="Zap Server"
-    link(rel="stylesheet" type="text/css" href="/static/css/main.css")
-    script(src="/static/js/axios.min.js")
-    script(src="/static/js/socket.io.js")
+    link(rel="stylesheet" type="text/css" href="/public/css/main.css")
+    script(src="/public/js/axios.min.js")
+    script(src="/public/js/socket.io.js")
   body
     div.screen#game-screen(class=!game_on && 'screen_hidden')
       div.deck-container
@@ -26,4 +26,4 @@ html(lang="en")
         input#register-button.button.modal__submit(type="submit" value="Ok")
           
   
-    script(src="/static/js/join-modal.js")
+    script(src="/public/js/join-modal.js")
