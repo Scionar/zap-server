@@ -56,11 +56,7 @@
 
     if (name.length >= 2 && name.length <= 10) {
       socket.emit('add player', {name}, (data) => {
-        console.log('1111K111TOGOOGO');
-        console.log(data);
         if (data.status === 'ok') {
-          console.log('KTOGOOGO');
-          console.log(data);
           joinModal.classList.add('modal_hidden');
           modalContainer.classList.add('modal-container_hidden');
           joinButton.classList.add('button_hidden');
