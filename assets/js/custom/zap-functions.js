@@ -1,23 +1,23 @@
-'use strict';
+const socket = io();
 
-var socket = io();
-
-var joinButton = document.getElementById('join-button');
-var modalContainer = document.getElementById('modal-container');
-var joinModal = document.getElementById('join-modal');
-var registerNameField = document.getElementById('register-name-field');
-var registerButton = document.getElementById('register-button');
-var playerList = document.getElementById('player-list');
-var joinScreen = document.getElementById('join-screen');
-var gameScreen = document.getElementById('game-screen');
+const joinButton = document.getElementById('join-button');
+const modalContainer = document.getElementById('modal-container');
+const joinModal = document.getElementById('join-modal');
+const registerNameField = document.getElementById('register-name-field');
+const registerButton = document.getElementById('register-button');
+const playerList = document.getElementById('player-list');
+const joinScreen = document.getElementById('join-screen');
+const gameScreen = document.getElementById('game-screen');
 
 function updatePlayers() {
-  axios.get('/api/player/getall').then(function (response) {
-    var users = response.data.players;
-    playerList.childNodes.forEach(function (current, index, array) {
+  axios.get('/api/player/getall')
+  .then((response) => {
+    const users = response.data.players;
+    playerList.childNodes.forEach((current, index, array) => {
       current.innerHTML = users[index] !== undefined ? users[index].name : '-';
     });
-  }).catch(function (error) {
+  })
+  .catch((error) => {
     console.log(error);
   });
 };
@@ -38,11 +38,11 @@ function showGameScreen(toggle) {
   }
 }
 
-(function () {
+(function() {
   /**
    * Open joining modal.
    */
-  joinButton.addEventListener('click', function () {
+  joinButton.addEventListener('click', () => {
     joinModal.classList.remove('modal_hidden');
     modalContainer.classList.remove('modal-container_hidden');
   });
@@ -50,11 +50,11 @@ function showGameScreen(toggle) {
   /**
    * Close joining modal and send session registeration.
    */
-  registerButton.addEventListener('click', function () {
-    var name = registerNameField.value;
+  registerButton.addEventListener('click', () => {
+    const name = registerNameField.value;
 
     if (name.length >= 2 && name.length <= 10) {
-      socket.emit('add player', { name: name }, function (data) {
+      socket.emit('add player', {name}, (data) => {
         if (data.status === 'ok') {
           joinModal.classList.add('modal_hidden');
           modalContainer.classList.add('modal-container_hidden');
