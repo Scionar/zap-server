@@ -6,9 +6,7 @@ const bodyParser = require("body-parser");
 const pug = require('pug');
 const db = require('./db');
 const webSocket = require('./websocket');
-const session = require('./session');
 const apiController = require('./controllers/api');
-const sessionController = require('./controllers/session');
 const Game = require('./models/game');
 const Player = require('./models/player');
 const resetGame = require('./middleware/reset-game');
@@ -18,26 +16,18 @@ const deletePlayer = require('./middleware/delete-player');
 const app = express();
 const server = http.Server(app);
 webSocket.create(server);
-session.create();
 
 app.set('view engine', 'pug')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(session.getSession());
 app.use('/api', apiController);
-app.use('/session', sessionController);
 app.use('/public', express.static('public'))
 
 app.get('/', (req, res) => {
-  if (!req.session.user) {
-    req.session.role = 'watch';
-  }
   Game.getStatus().then((status) => {
     res.render('game', {
-      role: req.session.role,
       game_on: (status === Game.GAME_STATUS_ON) ? 1 : 0,
       game_players: ['-', '-', '-'],
-      user_joined: req.session.user ? 1 : 0
     });
   });
 });
