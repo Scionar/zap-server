@@ -8,6 +8,7 @@ const db = require('./db');
 const webSocket = require('./websocket');
 const apiController = require('./controllers/api');
 const Game = require('./models/game');
+const Deck = require('./models/deck');
 const Player = require('./models/player');
 const resetGame = require('./middleware/reset-game');
 const addPlayer = require('./middleware/add-player');
@@ -43,6 +44,7 @@ db.connect((err) => {
         console.log('App listening on port :3001.');
 
         webSocket.get().on('connection', (socket) => {
+          // Initialize socket.
           if (!socket.data) socket.data = { name: null };
 
           socket.on('add player', (data, fn) => {
@@ -57,8 +59,16 @@ db.connect((err) => {
             );
           });
 
-          socket.on('disconnect', function () {
+          socket.on('disconnect', () => {
             deletePlayer(socket.data.name);
+          });
+
+          socket.on('get collection', fn => {
+            Deck.getCollection(socket.data.name)
+            .then(
+              collection => fn(collection),
+              () => fn([])
+            )
           });
         });
       });

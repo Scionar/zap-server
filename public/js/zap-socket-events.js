@@ -1,7 +1,5 @@
 'use strict';
 
-var socket = io();
-
 socket.on('update playerlist', function (data) {
   updatePlayers();
 });
@@ -9,4 +7,10 @@ socket.on('update playerlist', function (data) {
 socket.on('start game', function () {
   showJoinScreen(false);
   showGameScreen(true);
+});
+
+socket.on('cards dealed', function () {
+  socket.emit('get collection', function (collection) {
+    console.log(collection);
+  });
 });

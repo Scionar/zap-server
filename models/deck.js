@@ -7,14 +7,9 @@ const db = require('../db');
 const collectionExists = (name) => {
   return db.get().lrangeAsync('deck:index', 0, -1)
   .then(
-    (list) => {
-      if (list.indexOf(name) !== -1) return Promise.resolve();
-      return Promise.reject("Collection doesn't exists.");
-    },
-    () => {
-      throw new Error('Checking deck:index failed.');
-    }
-  );
+    list => (list.indexOf(name) !== -1) ? Promise.resolve() : Promise.reject(),
+    () => new Error(`Checking collection ${name} from deck:index failed.`)
+  )
 }
 module.exports.collectionExists = collectionExists;
 
@@ -25,12 +20,8 @@ module.exports.collectionExists = collectionExists;
 const emptyCollection = (target) => {
   return collectionExists(target)
   .then(
-    () => {
-      return db.get().delAsync(`deck:collection:${target}`)
-    },
-    () => {
-      throw new Error('Collection exist check failed.');
-    }
+    () => db.get().delAsync(`deck:collection:${target}`),
+    error => error
   );
 }
 module.exports.emptyCollection = emptyCollection;
@@ -84,9 +75,7 @@ module.exports.swapCard = (card, source, destination) => {
         db.get().lpushAsync(`deck:collection:${destination}`, card)
       ])
     },
-    () => {
-      throw new Error('Checking source and/or destination collections failed.');
-    }
+    error => error
   );
 }
 
@@ -96,29 +85,23 @@ module.exports.swapCard = (card, source, destination) => {
  * @param {string} destination Name of the destination collection. Null if all cards will be removed.
  */
 module.exports.swapCollection = (source, destination) => {
-  return Promise.all([
-    collectionExists(source),
-    collectionExists(destination)
-  ])
+  return collectionExists(destination)
   .then(
-    () => db.get().lrangeAsync(`deck:collection:${source}`, 0, -1),
-    () => {
-      throw new Error('Checking source and/or destination collections failed.');
-    }
+    () => getCollection(source),
+    error => error
   )
   .then(
-    sourceCollection => {
-      db.get().lpushAsync(`deck:collection:${destination}`, ...sourceCollection)
-    },
-    () => {
-      throw new Error('Fetching source collection content failed.');
-    }
+    () => getCollection(source),
+    error => error
   )
+  .then(
+    sourceCollection => db.get().lpushAsync(`deck:collection:${destination}`, ...sourceCollection),
+    error => error
+  )
+  .catch(error => {throw error})
   .then(
     () => emptyCollection(source),
-    () => {
-      throw new Error('Pushing cards to target collection failed.');
-    }
+    error => error
   )
 }
 
@@ -130,7 +113,7 @@ const getCollection = (name) => {
   return collectionExists(name)
   .then(
     () => db.get().lrangeAsync(`deck:collection:${name}`, 0, -1),
-    () => {throw new Error("Collection doesn't exist.")}
+    error => error
   );
 }
 module.exports.getCollection = getCollection;
