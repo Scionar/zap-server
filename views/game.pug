@@ -5,6 +5,7 @@ html(lang="en")
     link(rel="stylesheet" type="text/css" href="/public/css/main.css")
     script(src="/public/js/axios.min.js")
     script(src="/public/js/socket.io.js")
+    script(src="/public/js/hammer.min.js")
   body
     div.screen#game-screen(class=!game_on && 'screen_hidden')
       div.deck-container
@@ -25,5 +26,6 @@ html(lang="en")
         input#register-name-field.modal__text-input(type="text")
         input#register-button.button.modal__submit(type="submit" value="Ok")
   
+    script(src="/public/js/zap-card-ux-handling.js")
     script(src="/public/js/zap-functions.js")
     script(src="/public/js/zap-socket-events.js")

@@ -20,7 +20,7 @@ function updatePlayers() {
   }).catch(function (error) {
     console.log(error);
   });
-};
+}
 
 function showJoinScreen(toggle) {
   if (toggle) {
