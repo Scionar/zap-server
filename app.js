@@ -1,15 +1,13 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
 const http = require('http');
-const bodyParser = require("body-parser");
-const pug = require('pug');
+const bodyParser = require('body-parser');
 const db = require('./db');
 const webSocket = require('./websocket');
 const apiController = require('./controllers/api');
 const Game = require('./models/game');
 const Deck = require('./models/deck');
-const Player = require('./models/player');
 const resetGame = require('./middleware/reset-game');
 const addPlayer = require('./middleware/add-player');
 const deletePlayer = require('./middleware/delete-player');
@@ -18,11 +16,11 @@ const app = express();
 const server = http.Server(app);
 webSocket.create(server);
 
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api', apiController);
-app.use('/public', express.static('public'))
+app.use('/public', express.static('public'));
 
 app.get('/', (req, res) => {
   Game.getStatus().then((status) => {
@@ -49,30 +47,30 @@ db.connect((err) => {
 
           socket.on('add player', (data, fn) => {
             addPlayer(data.name)
-            .then(
-              () => {
-                // Add user data to socket.
-                socket.data.name = data.name;
-                fn({status: 'ok'})
-              },
-              () => fn({status: 'error'})
-            );
+              .then(
+                () => {
+                  // Add user data to socket.
+                  socket.data.name = data.name;
+                  fn({ status: 'ok' });
+                },
+                () => fn({ status: 'error' }),
+              );
           });
 
           socket.on('disconnect', () => {
             deletePlayer(socket.data.name);
           });
 
-          socket.on('get collection', fn => {
+          socket.on('get collection', (fn) => {
             Deck.getCollection(socket.data.name)
-            .then(
-              collection => fn(collection),
-              () => fn([])
-            )
+              .then(
+                collection => fn(collection),
+                () => fn([]),
+              );
           });
         });
       });
-    }, (error) => {
+    }, () => {
       console.log('Game status could not be reset. Check system.');
     });
   }

@@ -6,22 +6,20 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 
 const state = {
   client: null,
-}
+};
 
 module.exports.connect = (cb) => {
   state.client = redis.createClient();
   bluebird.promisifyAll(redis.RedisClient.prototype);
 
-  state.client.on("error", function (err) {
+  state.client.on('error', (err) => {
     console.log(err);
   });
 
   cb();
-}
+};
 
-module.exports.get = () => {
-  return state.client;
-}
+module.exports.get = () => state.client;
 
 module.exports.flush = (cb) => {
   if (state.client) {
@@ -32,7 +30,7 @@ module.exports.flush = (cb) => {
   } else {
     cb();
   }
-}
+};
 
 /**
  * Takes data to input and callback.
@@ -45,4 +43,4 @@ module.exports.input = (data, cb) => {
     state.client[value[0]](...value.slice(1));
     callback();
   }, cb);
-}
+};
