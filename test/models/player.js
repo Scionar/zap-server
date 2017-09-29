@@ -4,14 +4,14 @@ const Player = require('../../models/player');
 const data = require('../data/player');
 
 describe('Player model', () => {
-  before(function (done) {
+  before((done) => {
     db.connect((err) => {
       if (err) return done(err);
       done();
     });
   });
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     db.flush(() => {
       db.input(data.collections, () => {
         done();
@@ -19,76 +19,66 @@ describe('Player model', () => {
     });
   });
 
-  describe('#getAll()', function () {
-    it('should return array with two users objects', function (done) {
+  describe('#getAll()', () => {
+    it('should return array with two users objects', (done) => {
       Player.getAll()
-      .then((value) => {
-        value.should.be.a('array');
-        value.should.have.lengthOf(2);
-        value[0].should.be.a('object');
-        value[1].should.be.a('object');
-        done();
-      });
+        .then((value) => {
+          value.should.be.a('array');
+          value.should.have.lengthOf(2);
+          value[0].should.be.a('object');
+          value[1].should.be.a('object');
+          done();
+        });
     });
   });
 
-  describe('#deleteAll()', function () {
-    it('remove all users', function (done) {
+  describe('#deleteAll()', () => {
+    it('remove all users', (done) => {
       Player.deleteAll()
-      .then(() => {
-        return Player.getAll()
-      })
-      .then((value) => {
-        value.should.have.lengthOf(0);
-        done();
-      });
+        .then(() => Player.getAll())
+        .then((value) => {
+          value.should.have.lengthOf(0);
+          done();
+        });
     });
   });
 
-  describe('#add()', function () {
-    it('should add one new user', function (done) {
+  describe('#add()', () => {
+    it('should add one new user', (done) => {
       Player.add('Test')
-      .then(() => {
-        return Player.getAll();
-      }).then((value) => {
-        value.should.be.a('array');
-        value.should.have.lengthOf(3);
-        value.should.deep.include({name: 'test1'});
-        value.should.deep.include({name: 'test2'});
-        value.should.deep.include({name: 'Test'});
-        done();
-      });
+        .then(() => Player.getAll()).then((value) => {
+          value.should.be.a('array');
+          value.should.have.lengthOf(3);
+          value.should.deep.include({ name: 'test1' });
+          value.should.deep.include({ name: 'test2' });
+          value.should.deep.include({ name: 'Test' });
+          done();
+        });
     });
 
-    it('should add one new user as a first', function (done) {
+    it('should add one new user as a first', (done) => {
       Player.deleteAll()
-      .then(() => {
-        return Player.add('Test');
-      })
-      .then(() => {
-        return Player.getAll();
-      })
-      .then((value) => {
-        value.should.be.a('array');
-        value.should.have.lengthOf(1);
-        value.should.deep.include({name: 'Test'});
-        done();
-      });
+        .then(() => Player.add('Test'))
+        .then(() => Player.getAll())
+        .then((value) => {
+          value.should.be.a('array');
+          value.should.have.lengthOf(1);
+          value.should.deep.include({ name: 'Test' });
+          done();
+        });
     });
   });
 
-  describe('#delete()', function () {
-    it('should delete test1 and only have test2 user anymore', function (done) {
+  describe('#delete()', () => {
+    it('should delete test1 and only have test2 user anymore', (done) => {
       Player.delete('test1')
-      .then(() => {
-        return Player.getAll();
-      })
-      .then((value) => {
-        value.should.have.lengthOf(1);
-        value.should.deep.include({name: 'test2'});
-        value.should.not.deep.include({name: 'test1'});
-        done();
-      });
+        .then(() => Player.getAll())
+        .then((value) => {
+          value.should.have.lengthOf(1);
+          value.should.deep.include({ name: 'test2' });
+          value.should.not.deep.include({ name: 'test1' });
+          done();
+        });
     });
   });
 });

@@ -2,7 +2,8 @@
     "extends": "airbnb-base",
     "rules": {
       "no-param-reassign": ["error", {
-            "props": false
-      }]
+        "props": false
+      }],
+      "no-console": "off"
     }
 }

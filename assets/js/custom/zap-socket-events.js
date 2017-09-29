@@ -8,7 +8,7 @@ socket.on('start game', () => {
 });
 
 socket.on('cards dealed', () => {
-  socket.emit('get collection', collection => {
+  socket.emit('get collection', (collection) => {
     console.log(collection);
   });
 });

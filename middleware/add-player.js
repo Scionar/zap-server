@@ -3,21 +3,16 @@ const Player = require('../models/player');
 const startGame = require('./start-game');
 const webSocket = require('../websocket');
 
-module.exports = (name) => {
-  return Game.getStatus()
+module.exports = name => Game.getStatus()
   .then((value) => {
     // Check status.
-    if (value === Game.GAME_STATUS_ON) return Promise.reject('Game on.');
+    if (value === Game.GAME_STATUS_ON) return Promise.reject(new Error('Game on.'));
     return Promise.resolve();
   })
-  .then(() => {
-    return Player.add(name)
-  }, (reason) => {
+  .then(() => Player.add(name), (reason) => {
     console.log(reason);
   })
-  .then(() => {
-    return Player.getAll()
-  }, (reason) => {
+  .then(() => Player.getAll(), (reason) => {
     console.log(reason);
     return Promise.reject();
   })
@@ -27,5 +22,4 @@ module.exports = (name) => {
     return Promise.resolve();
   }, () => {
 
-  })
-}
+  });

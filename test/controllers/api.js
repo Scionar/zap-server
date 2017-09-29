@@ -1,4 +1,3 @@
-const expect = require('chai').should();
 const request = require('supertest');
 const express = require('express');
 const apiController = require('../../controllers/api');
@@ -10,16 +9,16 @@ describe('API controller', () => {
   const app = express();
   app.use('/api', apiController);
 
-  before(function (done) {
+  before((done) => {
     db.connect((err) => {
       if (err) return done(err);
-        app.listen(3001, () => {
-          done();
-        });
+      app.listen(3001, () => {
+        done();
+      });
     });
   });
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     db.flush(() => {
       db.input(gameData.collections, () => {
         db.input(playerData.collections, () => {
@@ -29,36 +28,36 @@ describe('API controller', () => {
     });
   });
 
-  describe('GET /api/player/getall', function () {
-    it('200', function (done) {
+  describe('GET /api/player/getall', () => {
+    it('200', (done) => {
       request(app)
-      .get('/api/player/getall')
-      .expect(200, done);
+        .get('/api/player/getall')
+        .expect(200, done);
     });
 
-    it('content type JSON', function (done) {
+    it('content type JSON', (done) => {
       request(app)
-      .get('/api/player/getall')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, done);
+        .get('/api/player/getall')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/, done);
     });
 
-    it('should response right data', function (done) {
+    it('should response right data', (done) => {
       request(app)
-      .get('/api/player/getall')
-      .end((err, res) => {
-        if (err) return done(err);
-        const value = res.body;
-        value.should.be.a('object');
-        value.should.have.property('players');
-        value.players.should.be.a('array');
-        value.players.should.have.lengthOf(2);
-        value.players[0].should.have.property('name');
-        value.players[0].name.should.equal('test1');
-        value.players[1].should.have.property('name');
-        value.players[1].name.should.equal('test2');
-        done();
-      });
+        .get('/api/player/getall')
+        .end((err, res) => {
+          if (err) return done(err);
+          const value = res.body;
+          value.should.be.a('object');
+          value.should.have.property('players');
+          value.players.should.be.a('array');
+          value.players.should.have.lengthOf(2);
+          value.players[0].should.have.property('name');
+          value.players[0].name.should.equal('test1');
+          value.players[1].should.have.property('name');
+          value.players[1].name.should.equal('test2');
+          done();
+        });
     });
   });
 });

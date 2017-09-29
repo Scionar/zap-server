@@ -31,9 +31,9 @@
     "compile": "gulp",
     "watch": "gulp watch",
     "test": "mocha \"test/**/*.js\"",
-    "precommit": "npm test",
-    "prepush": "npm test",
-    "lint": "eslint ."
+    "precommit": "npm test && npm run node-lint",
+    "prepush": "npm test && npm run node-lint",
+    "node-lint": "eslint ."
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

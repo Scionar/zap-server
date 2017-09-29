@@ -1,17 +1,16 @@
-const expect = require('chai').should();
 const db = require('../../db');
 const Game = require('../../models/game');
 const data = require('../data/game');
 
 describe('Game model', () => {
-  before(function (done) {
+  before((done) => {
     db.connect((err) => {
       if (err) return done(err);
       done();
     });
   });
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     db.flush(() => {
       db.input(data.collections, () => {
         done();
@@ -19,51 +18,46 @@ describe('Game model', () => {
     });
   });
 
-  describe('constants', function () {
-    it('should have ON constant', function (done) {
+  describe('constants', () => {
+    it('should have ON constant', (done) => {
       Game.should.have.property('GAME_STATUS_ON');
       done();
     });
 
-    it('should have OFF constant', function (done) {
+    it('should have OFF constant', (done) => {
       Game.should.have.property('GAME_STATUS_OFF');
       done();
     });
   });
 
-  describe('#getStatus()', function () {
-    it('should return right value', function (done) {
+  describe('#getStatus()', () => {
+    it('should return right value', (done) => {
       Game.getStatus()
-      .then((value) => {
-        value.should.be.a('string');
-        value.should.equal(Game.GAME_STATUS_OFF);
-        done();
-      });
+        .then((value) => {
+          value.should.be.a('string');
+          value.should.equal(Game.GAME_STATUS_OFF);
+          done();
+        });
     });
   });
 
-  describe('#setStatus()', function () {
-    it('should change game status to ON', function (done) {
+  describe('#setStatus()', () => {
+    it('should change game status to ON', (done) => {
       Game.setStatus(Game.GAME_STATUS_ON)
-      .then(() => {
-        return Game.getStatus()
-      })
-      .then((value) => {
-        value.should.equal(Game.GAME_STATUS_ON);
-        done();
-      });
+        .then(() => Game.getStatus())
+        .then((value) => {
+          value.should.equal(Game.GAME_STATUS_ON);
+          done();
+        });
     });
 
-    it('should change game status to OFF', function (done) {
+    it('should change game status to OFF', (done) => {
       Game.setStatus(Game.GAME_STATUS_OFF)
-      .then(() => {
-        return Game.getStatus()
-      })
-      .then((value) => {
-        value.should.equal(Game.GAME_STATUS_OFF);
-        done();
-      });
+        .then(() => Game.getStatus())
+        .then((value) => {
+          value.should.equal(Game.GAME_STATUS_OFF);
+          done();
+        });
     });
   });
-
 });
