@@ -56,6 +56,7 @@ function createCard(cardId) {
   const card = document.createElement('div');
   card.classList.add('card', 'card_get');
   card.setAttribute('data-card-id', cardId);
+  card.innerHTML = cardId;
   const container = document.getElementsByClassName('deck-container')[0];
 
   new Promise((resolve, reject) => {

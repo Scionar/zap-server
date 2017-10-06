@@ -62,6 +62,7 @@ function createCard(cardId) {
   var card = document.createElement('div');
   card.classList.add('card', 'card_get');
   card.setAttribute('data-card-id', cardId);
+  card.innerHTML = cardId;
   var container = document.getElementsByClassName('deck-container')[0];
 
   new Promise(function (resolve, reject) {
