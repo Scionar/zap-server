@@ -1,7 +1,7 @@
 const db = require('../db');
 
 /**
- * Check if promise exists in index. Using promise.
+ * Check if collection exists in index. Using promise.
  * @param {string} name One level array of cards in deck.
  */
 const collectionExists = name => db.get().lrangeAsync('deck:index', 0, -1)
