@@ -46,6 +46,10 @@ function throwCard(element) {
   hammer.get('swipe').set({ direction: Hammer.DIRECTION_UP });
   hammer.on('swipe', function (ev) {
     ev.target.classList.add('card_thrown');
+
+    var cardId = ev.target.getAttribute('data-card-id');
+    socket.emit('throw card', { cardId: cardId });
+
     window.setTimeout(function () {
       ev.target.remove();
     }, 400);

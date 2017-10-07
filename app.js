@@ -57,8 +57,14 @@ db.connect((err) => {
               );
           });
 
+          socket.on('throw card', (data) => {
+            console.log(data.cardId);
+            // todo: Check if user really has this card.
+            // todo: Move card to default collection.
+          });
+
           socket.on('disconnect', () => {
-            deletePlayer(socket.data.name);
+            if (socket.data.name !== null) deletePlayer(socket.data.name);
           });
 
           socket.on('get collection', (fn) => {
