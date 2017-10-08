@@ -1,6 +1,7 @@
 const socketIO = require('socket.io');
 const addPlayer = require('./middleware/add-player');
 const deletePlayer = require('./middleware/delete-player');
+const userHasCard = require('./middleware/user-has-card');
 const Deck = require('./models/deck');
 
 const state = {
@@ -26,10 +27,19 @@ module.exports.create = (server) => {
         );
     });
 
-    socket.on('throw card', (data) => {
+    socket.on('throw card', (data, fn) => {
       console.log(data.cardId);
-      // todo: Check if user really has this card.
-      // todo: Move card to default collection.
+      userHasCard(socket.data.name, data.cardId)
+        .then(
+          (exists) => {
+            if (exists) {
+              fn();
+              return Deck.swapCard(data.cardId, socket.data.name, 'default');
+            }
+            return Promise.resolve();
+          },
+          () => {},
+        );
     });
 
     socket.on('disconnect', () => {
