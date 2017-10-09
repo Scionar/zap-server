@@ -52,11 +52,7 @@ function getOwnCollection() {
 
 function gameStatusAction(gameOn, gameOff) {
   socket.emit('get game status', function (status) {
-    if (status) {
-      gameOn();
-    } else {
-      gameOff();
-    }
+    status ? gameOn() : gameOff();
   });
 }
 

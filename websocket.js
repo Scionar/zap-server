@@ -81,6 +81,9 @@ module.exports.create = (server) => {
         );
     });
 
+    /**
+     * Get game status.
+     */
     socket.on('get game status', (fn) => {
       Game.getStatus()
         .then(

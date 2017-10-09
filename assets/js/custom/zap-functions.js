@@ -51,7 +51,7 @@ function getOwnCollection() {
 }
 
 function gameStatusAction(gameOn, gameOff) {
-  socket.emit('get game status', (status) => {status ? gameOn() : gameOff()}});
+  socket.emit('get game status', (status) => {status ? gameOn() : gameOff()});
 }
 
 (function () {
