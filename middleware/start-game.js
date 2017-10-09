@@ -11,25 +11,29 @@ module.exports = () => Game.setStatus(Game.GAME_STATUS_ON)
       webSocket.get().emit('start game');
       return Promise.resolve();
     },
-    () => { throw new Error('Getting game status failed!'); },
+    () => new Error('Getting game status failed!'),
   )
   .catch(error => console.log(error))
   .then(
     () => Deck.createDeck(data.initCards),
-    () => { throw new Error('Emitting game start failed!'); },
+    () => new Error('Emitting game start failed!'),
+  )
+  .then(
+    () => Deck.createCollection('table'),
+    () => new Error('Creating deck failed!'),
   )
   .then(
     () => createPlayerCollections(),
-    () => { throw new Error('Creating deck failed!'); },
+    () => new Error('Creating table collection failed!'),
   )
   .catch(error => console.log(error))
   .then(
     () => dealCards(5),
-    () => { throw new Error('Creating player collections failed!'); },
+    () => new Error('Creating player collections failed!'),
   )
   .catch(error => console.log(error))
   .then(
     () => { webSocket.get().emit('cards dealed'); },
-    () => { throw new Error('Dealing cards failed!'); },
+    () => new Error('Dealing cards failed!'),
   )
   .catch(error => console.log(error));

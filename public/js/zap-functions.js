@@ -38,6 +38,28 @@ function showGameScreen(toggle) {
   }
 }
 
+function getOwnCollection() {
+  socket.emit('get own collection', function (collection) {
+    if (collection.length) {
+      var index = 0;
+      var setCardInterval = setInterval(function () {
+        createCard(collection[index]);index++;
+        if (index >= collection.length) clearInterval(setCardInterval);
+      }, 300);
+    }
+  });
+}
+
+function gameStatusAction(gameOn, gameOff) {
+  socket.emit('get game status', function (status) {
+    if (status) {
+      gameOn();
+    } else {
+      gameOff();
+    }
+  });
+}
+
 (function () {
   /**
    * Open joining modal.
@@ -64,5 +86,9 @@ function showGameScreen(toggle) {
     }
   });
 
-  updatePlayers();
+  gameStatusAction(function () {
+    getOwnCollection();
+  }, function () {
+    updatePlayers();
+  });
 })();

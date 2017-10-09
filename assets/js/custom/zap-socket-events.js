@@ -8,11 +8,5 @@ socket.on('start game', () => {
 });
 
 socket.on('cards dealed', () => {
-  socket.emit('get collection', (collection) => {
-    let index = 0;
-    const setCardInterval = setInterval(function() {
-      createCard(collection[index]); index++;
-      if (index >= 5) clearInterval(setCardInterval);
-    }, 300);
-  });
+  getOwnCollection();
 });
