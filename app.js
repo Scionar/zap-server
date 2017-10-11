@@ -5,7 +5,6 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const db = require('./db');
 const webSocket = require('./websocket');
-const apiController = require('./controllers/api');
 const Game = require('./models/game');
 const resetGame = require('./middleware/reset-game');
 
@@ -16,7 +15,6 @@ webSocket.create(server);
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/api', apiController);
 app.use('/public', express.static('public'));
 
 app.get('/', (req, res) => {

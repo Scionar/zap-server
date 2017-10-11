@@ -61,6 +61,12 @@ module.exports.create = (server) => {
             return Promise.resolve();
           },
           () => {},
+        )
+        .then(
+          () => {
+            socket.emit('give card', { card: data.cardId });
+          },
+          () => {},
         );
     });
 

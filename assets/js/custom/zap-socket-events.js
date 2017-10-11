@@ -10,3 +10,7 @@ socket.on('start game', () => {
 socket.on('cards dealed', () => {
   getOwnCollection();
 });
+
+socket.on('give card', (data) => {
+  createCard(data.card);
+});

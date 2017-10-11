@@ -12,3 +12,7 @@ socket.on('start game', function () {
 socket.on('cards dealed', function () {
   getOwnCollection();
 });
+
+socket.on('give card', function (data) {
+  createCard(data.card);
+});
