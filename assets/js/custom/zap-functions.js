@@ -10,16 +10,11 @@ const joinScreen = document.getElementById('join-screen');
 const gameScreen = document.getElementById('game-screen');
 
 function updatePlayers() {
-  axios.get('/api/player/getall')
-    .then((response) => {
-      const users = response.data.players;
-      playerList.childNodes.forEach((current, index, array) => {
-        current.innerHTML = users[index] !== undefined ? users[index].name : '-';
-      });
-    })
-    .catch((error) => {
-      console.log(error);
+  socket.emit('get all players', (players) => {
+    playerList.childNodes.forEach((current, index, array) => {
+      current.innerHTML = players[index] !== undefined ? players[index].name : '-';
     });
+  });
 }
 
 function showJoinScreen(toggle) {

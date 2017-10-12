@@ -12,13 +12,10 @@ var joinScreen = document.getElementById('join-screen');
 var gameScreen = document.getElementById('game-screen');
 
 function updatePlayers() {
-  axios.get('/api/player/getall').then(function (response) {
-    var users = response.data.players;
+  socket.emit('get all players', function (players) {
     playerList.childNodes.forEach(function (current, index, array) {
-      current.innerHTML = users[index] !== undefined ? users[index].name : '-';
+      current.innerHTML = players[index] !== undefined ? players[index].name : '-';
     });
-  }).catch(function (error) {
-    console.log(error);
   });
 }
 

@@ -4,6 +4,7 @@ const deletePlayer = require('./middleware/delete-player');
 const userHasCard = require('./middleware/user-has-card');
 const Deck = require('./models/deck');
 const Game = require('./models/game');
+const Player = require('./models/player');
 
 const state = {
   webSocket: null,
@@ -97,6 +98,15 @@ module.exports.create = (server) => {
             const booleanStatus = (status === Game.GAME_STATUS_ON) || false;
             Promise.resolve(fn(booleanStatus));
           },
+          () => {},
+        )
+        .catch((error) => { console.log(error); });
+    });
+
+    socket.on('get all players', (fn) => {
+      Player.getAll()
+        .then(
+          (players) => { fn(players); },
           () => {},
         )
         .catch((error) => { console.log(error); });

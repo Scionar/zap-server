@@ -3,13 +3,12 @@ html(lang="en")
   head
     title="Zap Server"
     link(rel="stylesheet" type="text/css" href="/public/css/main.css")
-    script(src="/public/js/axios.min.js")
     script(src="/public/js/socket.io.js")
     script(src="/public/js/hammer.min.js")
   body
     div.screen#game-screen(class=!game_on && 'screen_hidden')
       div.deck-container
-          
+
     div.screen.join-screen#join-screen(class=game_on && 'screen_hidden')
       div.screen__container
         h1 Zap.
@@ -18,14 +17,14 @@ html(lang="en")
           each val in game_players
             div.player-list__cell= val
         button.button#join-button(class=user_joined && 'button_hidden') Join
-    
+
     div#modal-container.modal-container.modal-container_hidden
       div.modal-container__shadow
       div#join-modal.modal.modal_hidden
         h2.modal__title Name?
         input#register-name-field.modal__text-input(type="text")
         input#register-button.button.modal__submit(type="submit" value="Ok")
-  
+
     script(src="/public/js/zap-card-ux-handling.js")
     script(src="/public/js/zap-functions.js")
     script(src="/public/js/zap-socket-events.js")
