@@ -9,6 +9,9 @@
     "url": "http://joonaviertola.com"
   },
   "license": "Apache-2.0",
+  "engines" : {
+    "node" : ">=8.0.0"
+  },
   "dependencies": {
     "async": "^2.5.0",
     "axios": "^0.16.2",

@@ -1,7 +1,15 @@
 # :zap: Zap server
 Zap server is a game server for card game. Game is made with MVC model and talking between server and client is handled with web socket.
 
+Game works with one window watching and players playing in their own devices. Player throws card on table and which is watching screen.
+
+## Requirements
+* Redis 4.0 (Used in current development)
+* NodeJS version >=8.0.0 (With nvm in use, run `nvm use`)
+
 ## Development
+
+### Useful NPM scripts
 * Install dependencies
 
   `npm install`
@@ -11,10 +19,21 @@ Zap server is a game server for card game. Game is made with MVC model and talki
 * Run application
 
   `npm start`
+* Run lint for NodeJS code
+
+  `npm run node-lint`
+
+### Other
 * Environment credentials
 
   Copy /.env.example to /.env and fill right credentials.
 
+* Githooks
+
+  Before commits and pushes, tests and lints are run. Git action is denied if tests or lints fail.
+
+
+## Functionality description
 
 ## User management
 Users can be divided in two roles. Watchers and players. Players are playing the game and others are watching. Users are identified with web socket connection. No AJAX and sessions.
