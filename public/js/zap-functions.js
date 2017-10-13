@@ -19,20 +19,12 @@ function updatePlayers() {
   });
 }
 
-function showJoinScreen(toggle) {
-  if (toggle) {
-    joinScreen.classList.remove('screen_hidden');
-  } else {
-    joinScreen.classList.add('screen_hidden');
-  }
+function showJoinScreen() {
+  joinScreen.classList.toggle('screen_hidden');
 }
 
-function showGameScreen(toggle) {
-  if (toggle) {
-    gameScreen.classList.remove('screen_hidden');
-  } else {
-    gameScreen.classList.add('screen_hidden');
-  }
+function showGameScreen() {
+  gameScreen.classList.toggle('screen_hidden');
 }
 
 function getOwnCollection() {
@@ -40,8 +32,11 @@ function getOwnCollection() {
     if (collection.length) {
       var index = 0;
       var setCardInterval = setInterval(function () {
-        createCard(collection[index]);index++;
-        if (index >= collection.length) clearInterval(setCardInterval);
+        createCard(collection[index]);
+        index++;
+        if (index >= collection.length) {
+          clearInterval(setCardInterval);
+        }
       }, 300);
     }
   });
@@ -79,9 +74,5 @@ function gameStatusAction(gameOn, gameOff) {
     }
   });
 
-  gameStatusAction(function () {
-    getOwnCollection();
-  }, function () {
-    updatePlayers();
-  });
+  gameStatusAction(getOwnCollection, updatePlayers);
 })();
